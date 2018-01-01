@@ -18,7 +18,7 @@
   <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" %>
   <%= javascript_pack_tag 'vendor', 'data-turbolinks-track': 'reload' %>
   <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag "//code.highcharts.com/highcharts.js", "chartkick" %>
+  <%= javascript_include_tag "//code.highcharts.com/highcharts.js" %>
 
   <%= csrf_meta_tags %>
   <%= action_cable_meta_tag %>
@@ -29,14 +29,13 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle status-<%= SmokeDetector.status_color %> collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="inline home" href="//charcoal-se.org/"><img src="//charcoal-se.org/assets/images/charcoal.png" height="32"><span>by Charcoal</span></a>
-      <a class="navbar-brand" href="/">metasmoke</a>
+      <a class="navbar-brand" href="/">mapt</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -45,7 +44,11 @@
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
-
+        <% if user_signed_in? %>
+          <%= nav_dropdown label: current_user.username || current_user.email do %>
+            <%= nav_link Devise::RegistrationsController, label: 'Edit Account', action: :edit %>
+          <% end %>
+        <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
