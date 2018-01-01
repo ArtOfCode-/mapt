@@ -89,6 +89,18 @@ module ApplicationHelper
     ) { tag.span class: 'caret' }
   end
 
+  def maps_javascript(callback)
+    javascript_include_tag("https://maps.googleapis.com/maps/api/js?key=#{Settings.maps_api_key}&libraries=places&callback=#{callback}",
+                           'data-turbolinks-eval': false)
+  end
+
+  def marker_paths
+    markers = %w[success info warning danger]
+    raw(markers.map { |a| [a, asset_url("marker_#{a}.png")] }
+               .map { |p| "<a class='maps-marker-ref' data-name='#{p[0]}' href='#{p[1]}'></a>" }
+               .join)
+  end
+
   protected
 
   def current_action?(cls, action = nil)
