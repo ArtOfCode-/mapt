@@ -1,14 +1,61 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Mapt</title>
-    <%= csrf_meta_tags %>
+<head>
+  <title>
+    <%= if content_for?(:title) then yield(:title) + ' - ' end %>
+    mapt
+  </title>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <body>
-    <%= yield %>
-  </body>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+
+  <%= stylesheet_link_tag "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" %>
+  <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css" %>
+
+  <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" %>
+  <%= javascript_include_tag "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" %>
+  <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" %>
+  <%= javascript_pack_tag 'vendor', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag "//code.highcharts.com/highcharts.js", "chartkick" %>
+
+  <%= csrf_meta_tags %>
+  <%= action_cable_meta_tag %>
+</head>
+<body class="<%= controller.class.name.sub(/Controller$/, '').underscore.dasherize %>">
+
+<nav class="navbar navbar-default navbar-static-top <%= "navbar-inverse" unless Rails.env.production? %>">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle status-<%= SmokeDetector.status_color %> collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="inline home" href="//charcoal-se.org/"><img src="//charcoal-se.org/assets/images/charcoal.png" height="32"><span>by Charcoal</span></a>
+      <a class="navbar-brand" href="/">metasmoke</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="col-md-offset-1 col-md-10">
+  <% flash.each do |key, value| %>
+      <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+
+  <%= yield %>
+</div>
+</body>
 </html>
