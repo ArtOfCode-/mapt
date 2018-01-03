@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  route: one
+  direction: MyString
+  name: MyString
+  lat: 9.99
+  long: 9.99
+
+two:
+  route: two
+  direction: MyString
+  name: MyString
+  lat: 9.99
+  long: 9.99
