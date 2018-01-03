@@ -4,9 +4,6 @@
   import/first
 */
 
-window.mapt = window.mapt || {};
-
-const util = require('../util');
-Object.assign(mapt, util);
-
 import '../cable'
+
+import '../modes'
