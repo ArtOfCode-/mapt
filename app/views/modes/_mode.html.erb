@@ -3,14 +3,16 @@
     <div class="panel-body">
       <div class="clearfix">
         <h4 class="pull-left"><i class="fa fa-<%= mode.icon %>"></i> <%= mode.name %></h4>
-        <h4 class="pull-right">
-          <%= link_to edit_mode_path(mode) do %>
-            <i class="fa fa-pencil fa-fw"></i>
-          <% end %>
-          <%= link_to destroy_mode_path(mode), remote: true, class: 'text-danger mode-delete', method: :delete do %>
-            <i class="fa fa-times fa-fw"></i>
-          <% end %>
-        </h4>
+        <% if current_user&.has_role?(:admin) %>
+          <h4 class="pull-right">
+            <%= link_to edit_mode_path(mode) do %>
+              <i class="fa fa-pencil fa-fw"></i>
+            <% end %>
+            <%= link_to destroy_mode_path(mode), remote: true, class: 'text-danger mode-delete', method: :delete do %>
+              <i class="fa fa-times fa-fw"></i>
+            <% end %>
+          </h4>
+        <% end %>
       </div>
       <p><%= mode.description %></p>
     </div>

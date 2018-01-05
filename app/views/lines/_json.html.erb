@@ -1,0 +1,5 @@
+<script>
+  let linesData = <%= raw(lines.map { |l| [l.id, { stops: l.stops.map(&:as_json), routing_points: l.routing_points.map(&:as_json) }] }
+                                .to_h.to_json) %>;
+  Object.globalAssign('mapt', { linesData });
+</script>

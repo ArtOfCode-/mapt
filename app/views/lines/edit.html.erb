@@ -1,0 +1,6 @@
+<h1>Edit Line <%= @line.name %></h1>
+<%= render 'form', url: update_line_path(@line) %>
+<%= render 'edit_route', line: @line %>
+<%= render 'json', lines: [@line] %>
+<%= marker_paths %>
+<%= maps_javascript 'mapt.initRouteEditMap' %>

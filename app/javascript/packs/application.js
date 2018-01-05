@@ -6,4 +6,6 @@
 
 import '../cable'
 
+import '../application'
 import '../modes'
+import '../lines'

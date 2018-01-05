@@ -22,6 +22,9 @@ gem 'webpacker', '~> 3.0'
 gem 'devise', '~> 4.2'
 gem 'rolify', '~> 5.1'
 
+gem 'will_paginate', '~> 3.0'
+gem 'will_paginate-bootstrap', '~> 1.0'
+
 gem 'foreman', '~> 0.84'
 
 group :development, :test do

@@ -1,0 +1,21 @@
+<div class="col-md-4">
+  <div class="panel panel-default line-panel" data-id="<%= line.id %>">
+    <div class="panel-body">
+      <div class="clearfix">
+        <h4 class="pull-left"><i class="fa fa-<%= line.mode.icon %>"></i> <%= line.name %></h4>
+        <% if current_user&.has_role?(:admin) %>
+          <h4 class="pull-right">
+            <%= link_to edit_line_path(line) do %>
+              <i class="fa fa-fw fa-pencil"></i>
+            <% end %>
+            <%= link_to destroy_line_path(line), method: :delete, class: 'text-danger' do %>
+              <i class="fa fa-fw fa-times"></i>
+            <% end %>
+          </h4>
+        <% end %>
+      </div>
+      <div class="line-condensed-map"></div><br/>
+      <p><%= line.description %></p>
+    </div>
+  </div>
+</div>

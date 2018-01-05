@@ -1,9 +1,9 @@
 class ModesController < ApplicationController
-  before_action :require_admin
+  before_action :require_admin, except: [:index]
   before_action :set_mode, only: [:edit, :update, :destroy]
 
   def index
-    @modes = Mode.all
+    @modes = Mode.all.paginate(page: params[:page], per_page: 15)
   end
 
   def new

@@ -1,0 +1,14 @@
+<h1>Lines</h1>
+
+<% @lines.in_groups_of(3).map(&:compact).each do |g| %>
+  <div class="row">
+    <% g.each do |l| %>
+      <%= render 'line', line: l %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= render 'json', lines: @lines %>
+
+<%= marker_paths %>
+<%= maps_javascript 'mapt.initLinesIndexMaps' %>

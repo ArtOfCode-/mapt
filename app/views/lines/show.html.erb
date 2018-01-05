@@ -1,0 +1,32 @@
+<h1><i class="fa fa-<%= @line.mode.icon %>"></i> <%= @line.name %></h1>
+<p><%= @line.description %></p>
+<div class="line-full-map" data-id="<%= @line.id %>"></div>
+
+<h2>Stops on this line</h2>
+<% @directions.in_groups_of(2).map(&:compact).each do |g| %>
+  <div class="row">
+    <% g.each do |d| %>
+      <div class="col-md-6">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th><%= d.direction %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @stops[d.direction].each do |s| %>
+              <tr>
+                <td><%= s.name %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%= render 'json', lines: [@line] %>
+
+<%= marker_paths %>
+<%= maps_javascript 'mapt.initLineShowMap' %>

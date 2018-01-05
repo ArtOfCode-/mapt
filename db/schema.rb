@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180103211521) do
+ActiveRecord::Schema.define(version: 20180104004125) do
+
+  create_table "lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "mode_id"
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mode_id"], name: "index_lines_on_mode_id"
+  end
 
   create_table "modes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -31,24 +40,24 @@ ActiveRecord::Schema.define(version: 20180103211521) do
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
-  create_table "routes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "mode_id"
-    t.string "name"
-    t.text "description"
+  create_table "routing_points", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "line_id"
+    t.decimal "lat", precision: 15, scale: 12
+    t.decimal "long", precision: 15, scale: 12
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["mode_id"], name: "index_routes_on_mode_id"
+    t.index ["line_id"], name: "index_routing_points_on_line_id"
   end
 
   create_table "stops", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "route_id"
+    t.bigint "line_id"
     t.string "direction"
     t.string "name"
     t.decimal "lat", precision: 15, scale: 12
     t.decimal "long", precision: 15, scale: 12
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["route_id"], name: "index_stops_on_route_id"
+    t.index ["line_id"], name: "index_stops_on_line_id"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -77,6 +86,7 @@ ActiveRecord::Schema.define(version: 20180103211521) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
-  add_foreign_key "routes", "modes"
-  add_foreign_key "stops", "routes"
+  add_foreign_key "lines", "modes"
+  add_foreign_key "routing_points", "lines"
+  add_foreign_key "stops", "lines"
 end

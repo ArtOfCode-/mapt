@@ -1,3 +1,7 @@
+import createDebug from 'debug';
+
+const debug = createDebug('mapt:util');
+
 const routes = [];
 $(document).on('ready', () => {
   const { pathname } = location;
@@ -33,4 +37,32 @@ export function route(path, enter, exit = () => {}) {
 
 export function onLoad(cb) {
   $(document).on('ready', cb);
+}
+
+Object.globalAssign = (k, a) => {
+  if (typeof(window[k]) !== 'object') {
+    window[k] = {};
+  }
+  Object.assign(window[k], a);
+};
+
+Object.each = (o, f) => {
+  const keys = Object.keys(o);
+  keys.forEach((k) => {
+    f(k, o[k]);
+  });
+};
+
+Object.filter = (o, f) => {
+  const matches = {};
+  Object.each(o, (k, v) => {
+    if (f(k, v)) {
+      matches[k] = v;
+    }
+  });
+  return matches;
+};
+
+export function markerPath(name) {
+  return $("a[data-name=" + name + "]").attr('href');
 }
