@@ -3,7 +3,7 @@ import createDebug from 'debug';
 
 const debug = createDebug('mapt:lines');
 
-const pointRadius = (map, zoom) => {
+const pointRadius = (map) => {
   const bounds = map.getBounds();
   const pixHeight = 550;
   const latHeight = Math.abs(bounds.getNorthEast().lat() - bounds.getSouthWest().lat());
@@ -228,7 +228,7 @@ const initRouteEditMap = () => {
   });
 
   map.addListener('zoom_changed', () => {
-    routePoints.forEach((x) => x.setRadius(pointRadius(map, map.getZoom())));
+    routePoints.forEach((x) => x.setRadius(pointRadius(map)));
   });
 };
 
