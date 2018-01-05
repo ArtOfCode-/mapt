@@ -1,0 +1,31 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th><%= direction %> (<%= stops.size %>)</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% stops.each do |s| %>
+    <tr data-id="<%= s.id %>">
+      <td><%= s.name %></td>
+      <td class="text-right">
+        <% if admin %>
+          <%= link_to move_stop_path(s, absolute: 0), method: :post, remote: true, class: 'move-stop' do %>
+            <i class="fa fa-fw fa-angle-double-up" title="move to top"></i>
+          <% end %>
+          <%= link_to move_stop_path(s, change: -1), method: :post, remote: true, class: 'move-stop' do %>
+            <i class="fa fa-fw fa-angle-up" title="move up"></i>
+          <% end %>
+          <%= link_to move_stop_path(s, change: 1), method: :post, remote: true, class: 'move-stop' do %>
+            <i class="fa fa-fw fa-angle-down" title="move down"></i>
+          <% end %>
+          <%= link_to move_stop_path(s, absolute: -1), method: :post, remote: true, class: 'move-stop' do %>
+            <i class="fa fa-fw fa-angle-double-down" title="move to bottom"></i>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

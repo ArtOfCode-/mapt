@@ -23,7 +23,7 @@ class LinesController < ApplicationController
 
   def show
     @directions = @line.stops.select('DISTINCT direction')
-    @stops = @directions.map { |d| [d.direction, @line.stops.where(direction: d.direction)] }.to_h
+    @stops = @directions.map { |d| [d.direction, @line.stops.where(direction: d.direction).order(:index)] }.to_h
   end
 
   def edit; end

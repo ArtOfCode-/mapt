@@ -16,24 +16,20 @@
 
 <h2>Stops on this line</h2>
 <% @directions.in_groups_of(2).map(&:compact).each do |g| %>
+  <% admin = current_user&.has_role?(:admin) %>
   <div class="row">
-    <% g.each do |d| %>
-      <div class="col-md-6">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th><%= d.direction %></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @stops[d.direction].each do |s| %>
-              <tr>
-                <td><%= s.name %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+    <% g.each_with_index do |d, i| %>
+      <div class="<%= @directions.size < 2 && i == 0 ? 'col-md-5' : 'col-md-6' %>">
+        <%= render 'stops/line_table', stops: @stops[d.direction], direction: d.direction, admin: admin %>
       </div>
+      <% if @directions.size < 2 && i == 0 %>
+        <div class="col-md-2 text-center clone-controls">
+          <%= link_to clone_stops_path(line_id: @line.id), method: :post, title: 'Clone stops list to opposite direction' do %>
+            <i class="fa fa-2x fa-clone"></i>
+            <p>Clone</p>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180104004125) do
+ActiveRecord::Schema.define(version: 20180105195454) do
 
   create_table "lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "mode_id"
@@ -57,7 +57,10 @@ ActiveRecord::Schema.define(version: 20180104004125) do
     t.decimal "long", precision: 15, scale: 12
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "index"
+    t.bigint "stop_id"
     t.index ["line_id"], name: "index_stops_on_line_id"
+    t.index ["stop_id"], name: "index_stops_on_stop_id"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -89,4 +92,5 @@ ActiveRecord::Schema.define(version: 20180104004125) do
   add_foreign_key "lines", "modes"
   add_foreign_key "routing_points", "lines"
   add_foreign_key "stops", "lines"
+  add_foreign_key "stops", "stops"
 end

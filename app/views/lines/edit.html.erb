@@ -1,4 +1,5 @@
 <h1>Edit Line <%= @line.name %></h1>
+<p><%= link_to raw('&larr; Back to list'), lines_path %></p>
 <%= render 'form', url: update_line_path(@line) %>
 <%= render 'edit_route', line: @line %>
 <%= render 'json', lines: [@line] %>

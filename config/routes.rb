@@ -24,6 +24,8 @@ Rails.application.routes.draw do
 
   scope 'stops' do
     post   'new',      to: 'stops#create',  as: :new_stop
+    post   ':id/move', to: 'stops#move',    as: :move_stop
+    post   'clone',    to: 'stops#clone',   as: :clone_stops
     delete 'location', to: 'stops#destroy', as: :destroy_stop
   end
 

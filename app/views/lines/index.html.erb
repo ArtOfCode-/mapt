@@ -1,4 +1,9 @@
 <h1>Lines</h1>
+<% if current_user&.has_role?(:admin) %>
+  <p>
+    <%= link_to '+ Add new', new_line_path %>
+  </p>
+<% end %>
 
 <% @lines.in_groups_of(3).map(&:compact).each do |g| %>
   <div class="row">
