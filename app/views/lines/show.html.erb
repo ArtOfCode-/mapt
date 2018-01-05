@@ -1,4 +1,16 @@
-<h1><i class="fa fa-<%= @line.mode.icon %>"></i> <%= @line.name %></h1>
+<h1>
+  <i class="fa fa-<%= @line.mode.icon %>"></i> <%= @line.name %>
+  <% if current_user&.has_role?(:admin) %>
+    <small>
+      <%= link_to edit_line_path(@line) do %>
+        <i class="fa fa-fw fa-pencil"></i>
+      <% end %>
+      <%= link_to destroy_line_path(@line), method: :delete, class: 'text-danger' do %>
+        <i class="fa fa-fw fa-times"></i>
+      <% end %>
+    </small>
+  <% end %>
+</h1>
 <p><%= @line.description %></p>
 <div class="line-full-map" data-id="<%= @line.id %>"></div>
 

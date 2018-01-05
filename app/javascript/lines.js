@@ -1,12 +1,19 @@
-// TODO scale route points as user zooms
-// TODO stop direction
-
 const { markerPath, onLoad } = require('./util');
 import createDebug from 'debug';
 
 const debug = createDebug('mapt:lines');
 
-const initLineMap = (id, container, routingPoints, stops) => {
+const pointRadius = (map, zoom) => {
+  const bounds = map.getBounds();
+  const pixHeight = 550;
+  const latHeight = Math.abs(bounds.getNorthEast().lat() - bounds.getSouthWest().lat());
+  const heightMeters = latHeight * 111111;
+  const perPix = heightMeters / pixHeight;
+
+  return 10 * perPix;
+};
+
+const initLineMap = (id, container, routingPoints, stops, includePoints) => {
   const centerRoutingPoint = routingPoints[Math.floor(routingPoints.length / 2)];
   let center;
 
@@ -44,19 +51,21 @@ const initLineMap = (id, container, routingPoints, stops) => {
   route.setMap(map);
 
   const routePoints = [];
-  routingPoints.forEach((x) => {
-    const point = new google.maps.Circle({
-      center: { lat: parseFloat(x.lat), lng: parseFloat(x.long) },
-      radius: 20,
-      map: map,
-      fillColor: '#AA0000',
-      fillOpacity: 1.0,
-      strokeColor: '#AA0000',
-      strokeWeight: 2,
-      strokeOpacity: 1.0
+  if (includePoints) {
+    routingPoints.forEach((x) => {
+      const point = new google.maps.Circle({
+        center: {lat: parseFloat(x.lat), lng: parseFloat(x.long)},
+        radius: 236,
+        map: map,
+        fillColor: '#AA0000',
+        fillOpacity: 1.0,
+        strokeColor: '#AA0000',
+        strokeWeight: 2,
+        strokeOpacity: 1.0
+      });
+      routePoints.push(point);
     });
-    routePoints.push(point);
-  });
+  }
 
   return { map, stopMarkers, routePoints, routePath, route };
 };
@@ -88,7 +97,7 @@ const initRouteEditMap = () => {
   const id = $container.data('id');
   const { stops, routing_points: routingPoints } = getLineData(id);
 
-  let { map, stopMarkers, routePoints, route } = initLineMap(id, $container[0], routingPoints, stops);
+  let { map, stopMarkers, routePoints, route } = initLineMap(id, $container[0], routingPoints, stops, true);
 
   const deleteStop = (ev) => {
     if ($container.data('mode') !== 'stops') {
@@ -145,12 +154,26 @@ const initRouteEditMap = () => {
 
   map.addListener('click', (ev) => {
     if ($container.data('mode') === 'stops') {
+      const $direction = $('#stop_direction');
+      const $formGroup = $direction.parents('.form-group');
+      const direction = $direction.val();
+      if (!direction) {
+        $formGroup.addClass('has-error');
+        $formGroup.find('.help-block').show();
+        return;
+      }
+      else {
+        $formGroup.removeClass('has-error');
+        $formGroup.find('.help-block').hide();
+      }
+
       const data = {
         stop: {
           lat: ev.latLng.lat(),
           long: ev.latLng.lng(),
           name: prompt('Stop name:'),
-          line_id: parseInt(id, 10)
+          line_id: parseInt(id, 10),
+          direction
         }
       };
       $.ajax({
@@ -202,6 +225,10 @@ const initRouteEditMap = () => {
         debug('Point creation failed:', data, xhr);
       });
     }
+  });
+
+  map.addListener('zoom_changed', () => {
+    routePoints.forEach((x) => x.setRadius(pointRadius(map, map.getZoom())));
   });
 };
 

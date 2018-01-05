@@ -13,3 +13,17 @@
 .line-full-map {
   height: 550px;
 }
+
+#stop_direction {
+  width: 20em;
+}
+
+.direction-group {
+  width: 30em;
+  margin: 0 1em;
+}
+
+.direction-group + .help-block {
+  display: none;
+  margin: 0 1em;
+}
