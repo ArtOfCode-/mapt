@@ -44,11 +44,13 @@ const initLineMap = (id, container, routingPoints, stops, includePoints) => {
     });
     map.setClickableIcons(false);
 
-    const latMinMax = findMinMax(routingPoints, (x) => parseFloat(x.lat));
-    const longMinMax = findMinMax(routingPoints, (x) => parseFloat(x.long));
-    const bounds = { north: parseFloat(latMinMax[1].lat), south: parseFloat(latMinMax[0].lat),
-      east: parseFloat(longMinMax[1].long), west: parseFloat(longMinMax[0].long) };
-    map.fitBounds(bounds);
+    if (routingPoints.length > 0) {
+      const latMinMax = findMinMax(routingPoints, (x) => parseFloat(x.lat));
+      const longMinMax = findMinMax(routingPoints, (x) => parseFloat(x.long));
+      const bounds = { north: parseFloat(latMinMax[1].lat), south: parseFloat(latMinMax[0].lat),
+                       east: parseFloat(longMinMax[1].long), west: parseFloat(longMinMax[0].long) };
+      map.fitBounds(bounds);
+    }
 
     const stopMarkers = [];
     const markerIcon = markerPath('danger');
@@ -245,6 +247,7 @@ const initRouteEditMap = () => {
           });
           routePoints.push(point);
           route.getPath().push(ev.latLng);
+          point.addListener('click', deletePoint);
         })
         .fail((xhr) => {
           debug('Point creation failed:', data, xhr);

@@ -1,6 +1,6 @@
 class StopsController < ApplicationController
   before_action :require_admin
-  before_action :set_stop_by_location, only: [:delete]
+  before_action :set_stop_by_location, only: [:destroy]
   before_action :set_stop, only: [:move]
 
   def create
