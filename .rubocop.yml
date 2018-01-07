@@ -28,6 +28,8 @@ Style/NumericPredicate:
   Enabled: true
 Style/AsciiComments:
   Enabled: false
+Style/MultilineTernaryOperator:
+  Enabled: false
 
 # Want to refactor some stuff? Remove these.
 Metrics/AbcSize:

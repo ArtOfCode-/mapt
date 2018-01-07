@@ -34,6 +34,45 @@
   </div>
 <% end %>
 
+<h2>Connections</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Connects to</th>
+      <th>At</th>
+      <th>Change required? <span class="text-muted">click to toggle</span></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @line.connections.each do |c| %>
+      <% l = c.other_line(@line) %>
+      <tr>
+        <td>
+          <%= link_to line_path(l) do %>
+            <i class="fa fa-fw fa-<%= l.mode.icon %>"></i> <%= l.name %>
+          <% end %>
+        </td>
+        <td><%= c.stop.name %></td>
+        <td>
+          <%= link_to toggle_connection_change_path(c), method: :post, class: "text-#{c.change_required? ? 'success' : 'danger'} toggle-change",
+                      remote: true do %>
+            <i class="fa fa-<%= c.change_required? ? 'check' : 'times' %>"></i>
+          <% end %>
+        </td>
+        <td class="text-right">
+          <% if current_user&.has_role?(:admin) %>
+            <%= link_to destroy_connection_path(c), method: :delete, class: 'text-danger delete-connection', remote: true,
+                        data: { toggle: 'tooltip' }, title: 'delete' do %>
+              <i class="fa fa-times"></i>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <%= render 'json', lines: [@line] %>
 
 <%= marker_paths %>

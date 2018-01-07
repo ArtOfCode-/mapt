@@ -1,6 +1,6 @@
 class LinesController < ApplicationController
   before_action :require_admin, except: [:show]
-  before_action :set_line, except: [:index, :new, :create]
+  before_action :set_line, except: [:index, :new, :create, :show]
 
   def index
     @lines = Line.all.includes(:mode).includes(:stops).includes(:routing_points).paginate(page: params[:page], per_page: 21)
@@ -22,6 +22,7 @@ class LinesController < ApplicationController
   end
 
   def show
+    @line = Line.where(id: params[:id]).includes(:mode, connections_in: [:from, :to, :stop], connections_out: [:from, :to, :stop]).first
     @directions = @line.stops.select('DISTINCT direction')
     @stops = @directions.map { |d| [d.direction, @line.stops.where(direction: d.direction).order(:index)] }.to_h
   end

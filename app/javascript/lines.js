@@ -163,11 +163,14 @@ const initRouteEditMap = () => {
         data: position
       })
       .done(() => {
-        route.getPath().forEach((x, i) => {
+        const path = route.getPath();
+        for (let i = 0; i < path.length; i++) {
+          let x = path.getAt(i);
           if (x.equals(point.getCenter())) {
             route.getPath().removeAt(i);
+            break;
           }
-        });
+        }
         point.setMap(null);
       })
       .fail((xhr) => {
@@ -292,5 +295,17 @@ onLoad(() => {
       const insertAfterIdx = data.position - shift;
       $trs.eq(insertAfterIdx).after($target.parents('tr').remove());
     }
+  });
+
+  $('.delete-connection').on('ajax:success', (ev) => {
+    $(ev.target).parents('tr').fadeOut(200, function () {
+      $(this).remove();
+    });
+  });
+
+  $('.toggle-change').on('ajax:success', (ev) => {
+    const $target = $(ev.target);
+    $target.toggleClass('text-danger').toggleClass('text-success');
+    $target.children('i').toggleClass('fa-times').toggleClass('fa-check');
   });
 });

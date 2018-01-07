@@ -33,4 +33,9 @@ Rails.application.routes.draw do
     post   'new',      to: 'routing_points#create',  as: :new_point
     delete 'location', to: 'routing_points#destroy', as: :destroy_point
   end
+
+  scope 'connections' do
+    post   ':id/change', to: 'connections#toggle_change', as: :toggle_connection_change
+    delete ':id',        to: 'connections#destroy',       as: :destroy_connection
+  end
 end
